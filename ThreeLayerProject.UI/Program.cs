@@ -1,29 +1,37 @@
+using Microsoft.EntityFrameworkCore;
+using ThreeLayerProject.Data;
+using ThreeLayerProject.Data.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// 🔹 PostgreSQL bağlantısı
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// 🔹 Repository bağımlılıkları
+builder.Services.AddScoped<IContactRepository, ContactRepository>();
+
+// 🔹 MVC servisi
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// 🔹 Hata yönetimi ve güvenlik
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
+// 🔹 HTTP pipeline
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseRouting();
-
 app.UseAuthorization();
 
-app.MapStaticAssets();
-
+// 🔹 Varsayılan route
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

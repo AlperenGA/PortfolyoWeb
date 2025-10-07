@@ -274,11 +274,12 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="index.cshtml">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
+  <a class="nav-link collapsed" asp-controller="Home" asp-action="Index">
+    <i class="bi bi-grid"></i>
+    <span>Dashboard</span>
+  </a>
+</li><!-- End Dashboard Nav -->
+
 
       <li class="nav-item">
         <a class="nav-link " data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
@@ -300,10 +301,10 @@
           <!-- End Categories Page Nav -->
 
           <li>
-        <a class="nav-link " href="Contact.cshtml">
-          <i class="bi bi-envelope"></i><span>Contact</span>
-        </a>
-      </li><!-- End Contact Page Nav -->
+    <a class="nav-link" asp-controller="Contact" asp-action="Index">
+        <i class="bi bi-envelope"></i><span>Contact</span>
+    </a>
+</li>
      
   
         </ul>
