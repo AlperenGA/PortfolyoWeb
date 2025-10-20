@@ -1,5 +1,6 @@
-using ThreeLayerProject.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using ThreeLayerProject.Entities.Models; // ✅ Doğru namespace
 
 namespace ThreeLayerProject.Data.Repositories
 {

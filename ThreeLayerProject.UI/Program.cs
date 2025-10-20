@@ -4,9 +4,9 @@ using ThreeLayerProject.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔹 PostgreSQL bağlantısı
+// 🔹 SQLite bağlantısı (lokal db dosyası)
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite("Data Source=three_layer_db.db"));
 
 // 🔹 Repository bağımlılıkları
 builder.Services.AddScoped<IContactRepository, ContactRepository>();

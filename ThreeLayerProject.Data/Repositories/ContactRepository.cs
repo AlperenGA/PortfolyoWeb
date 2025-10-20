@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ThreeLayerProject.Entities;
+using ThreeLayerProject.Entities.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

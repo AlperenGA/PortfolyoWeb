@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using ThreeLayerProject.Data.Repositories;
 using ThreeLayerProject.Entities;
 using ThreeLayerProject.UI.Models;
+using ThreeLayerProject.Entities.Models;
 using System;
 using System.Threading.Tasks;
 
