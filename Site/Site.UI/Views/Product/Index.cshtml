@@ -1,0 +1,135 @@
+@model IEnumerable<Site.UI.Models.Product>
+@{
+    ViewData["Title"] = "Product Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<main>
+      <!-- Page Banner -->
+      <div class="page-banner overlay">
+        <picture class="media media-bg">
+          <source media="(max-width: 575px)" srcset="~/assets/img/banner/page-banner-575.jpg">
+          <source media="(max-width: 991px)" srcset="~/assets/img/banner/page-banner-991.jpg">
+          <img src="~/assets/img/banner/page-banner.jpg" width="1920" height="520" loading="eager" alt="Page Banner Image">
+        </picture>
+        <div class="page-banner-content">
+          <div class="container text-center">
+            <h1 class="heading text-80 fw-700 aos-init aos-animate" data-aos="fade-up">
+              Our Project
+            </h1>
+            <ul class="breadcrumb list-unstyled aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+              <li>
+                  <a asp-area="" asp-controller="Home" asp-action="Index" class="text text-18" aria-label="Home Page">
+                  Home
+                </a>
+              </li>
+              <li>
+                <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M7.08929 5.40903C7.24552 5.5653 7.33328 5.77723 7.33328 5.9982C7.33328 6.21917 7.24552 6.43109 7.08929 6.58736L2.37512 11.3015C2.29825 11.3811 2.2063 11.4446 2.10463 11.4883C2.00296 11.532 1.89361 11.5549 1.78296 11.5559C1.67231 11.5569 1.56258 11.5358 1.46016 11.4939C1.35775 11.452 1.2647 11.3901 1.18646 11.3119C1.10822 11.2336 1.04634 11.1406 1.00444 11.0382C0.962537 10.9357 0.941453 10.826 0.942414 10.7154C0.943376 10.6047 0.966364 10.4954 1.01004 10.3937C1.05371 10.292 1.1172 10.2001 1.19679 10.1232L5.32179 5.9982L1.19679 1.8732C1.04499 1.71603 0.960996 1.50553 0.962894 1.28703C0.964793 1.06853 1.05243 0.859522 1.20694 0.705015C1.36145 0.550508 1.57046 0.462868 1.78896 0.460969C2.00745 0.45907 2.21795 0.543066 2.37512 0.694864L7.08929 5.40903Z" fill="currentColor"></path>
+                </svg>
+              </li>
+              <li>
+                <a role="link" aria-disabled="true" class="text text-18 active">
+                  Our Project
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projects -->
+      <div class="page-projects mt-100">
+        <div class="container-fluid">
+          <div class="row product-grid">
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+              <a class="card-project radius18" aria-label="project details" href="project-details.html">
+                <img src="~/assets/img/project/card/1.jpg" alt="project image" width="645" height="690" loading="lazy">
+                <div class="card-project-content-absolute">
+                  <div class="card-project-content">
+                    <h2 class="heading text-24">Business Development</h2>
+                    <p class="text text-16">Digital marketing</p>
+                  </div>
+                </div>
+                <span class="svg-wrapper icon-project-link">
+                  <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="32" cy="32" r="32" fill="white"></circle>
+                    <path d="M26.1667 39C25.8167 39 25.5833 38.8833 25.35 38.65C24.8833 38.1833 24.8833 37.4833 25.35 37.0167L37.0167 25.35C37.4833 24.8833 38.1833 24.8833 38.65 25.35C39.1167 25.8167 39.1167 26.5167 38.65 26.9833L26.9833 38.65C26.75 38.8833 26.5167 39 26.1667 39Z" fill="#20282D"></path>
+                    <path d="M37.8332 37.8333C37.1332 37.8333 36.6665 37.3667 36.6665 36.6667V27.3333H27.3332C26.6332 27.3333 26.1665 26.8667 26.1665 26.1667C26.1665 25.4667 26.6332 25 27.3332 25H37.8332C38.5332 25 38.9998 25.4667 38.9998 26.1667V36.6667C38.9998 37.3667 38.5332 37.8333 37.8332 37.8333Z" fill="#20282D"></path>
+                  </svg>
+                </span>
+              </a>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+              <a class="card-project radius18" aria-label="project details" href="project-details.html">
+                <img src="~/assets/img/project/card/2.jpg" alt="project image" width="645" height="690" loading="lazy">
+                <div class="card-project-content-absolute">
+                  <div class="card-project-content">
+                    <h2 class="heading text-24">Plan Development</h2>
+                    <p class="text text-16">Consulting</p>
+                  </div>
+                </div>
+                <span class="svg-wrapper icon-project-link">
+                  <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="32" cy="32" r="32" fill="white"></circle>
+                    <path d="M26.1667 39C25.8167 39 25.5833 38.8833 25.35 38.65C24.8833 38.1833 24.8833 37.4833 25.35 37.0167L37.0167 25.35C37.4833 24.8833 38.1833 24.8833 38.65 25.35C39.1167 25.8167 39.1167 26.5167 38.65 26.9833L26.9833 38.65C26.75 38.8833 26.5167 39 26.1667 39Z" fill="#20282D"></path>
+                    <path d="M37.8332 37.8333C37.1332 37.8333 36.6665 37.3667 36.6665 36.6667V27.3333H27.3332C26.6332 27.3333 26.1665 26.8667 26.1665 26.1667C26.1665 25.4667 26.6332 25 27.3332 25H37.8332C38.5332 25 38.9998 25.4667 38.9998 26.1667V36.6667C38.9998 37.3667 38.5332 37.8333 37.8332 37.8333Z" fill="#20282D"></path>
+                  </svg>
+                </span>
+              </a>
+            </div>
+            
+            
+          
+
+          <nav class="pagination">
+            <ul class="list-unstyled pagintaion-list aos-init aos-animate" data-aos="fade-up">
+              <!-- <li>
+                <a
+                  role="link"
+                  class="pagination-link"
+                  aria-disabled="true"
+                  aria-label="Previous page link"
+                >
+                  <svg
+                    viewBox="0 0 8 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M0.910711 5.40903C0.754485 5.5653 0.666722 5.77723 0.666722 5.9982C0.666722 6.21917 0.754485 6.43109 0.910711 6.58736L5.62488 11.3015C5.70175 11.3811 5.7937 11.4446 5.89537 11.4883C5.99704 11.532 6.10639 11.5549 6.21704 11.5559C6.32769 11.5569 6.43742 11.5358 6.53984 11.4939C6.64225 11.452 6.7353 11.3901 6.81354 11.3119C6.89178 11.2336 6.95366 11.1406 6.99556 11.0382C7.03746 10.9357 7.05855 10.826 7.05759 10.7154C7.05662 10.6047 7.03364 10.4954 6.98996 10.3937C6.94629 10.292 6.8828 10.2001 6.80321 10.1232L2.67821 5.9982L6.80321 1.8732C6.95501 1.71603 7.039 1.50553 7.03711 1.28703C7.03521 1.06853 6.94757 0.859522 6.79306 0.705015C6.63855 0.550508 6.42954 0.462868 6.21104 0.460969C5.99255 0.45907 5.78205 0.543066 5.62488 0.694864L0.910711 5.40903Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </a>
+              </li> -->
+              <li>
+                <a href="#" class="pagination-link active" aria-label="Page 1 link">
+                  1
+                </a>
+              </li>
+              <li>
+                <a href="#" class="pagination-link" aria-label="Page 2 link">
+                  2
+                </a>
+              </li>
+              <li>
+                <a href="#" class="pagination-link" aria-label="Page 3 link">
+                  3
+                </a>
+              </li>
+              <li>
+                <a href="#" class="pagination-link" aria-label="Next page link">
+                  <svg viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.08929 5.40903C7.24552 5.5653 7.33328 5.77723 7.33328 5.9982C7.33328 6.21917 7.24552 6.43109 7.08929 6.58736L2.37512 11.3015C2.29825 11.3811 2.2063 11.4446 2.10463 11.4883C2.00296 11.532 1.89361 11.5549 1.78296 11.5559C1.67231 11.5569 1.56258 11.5358 1.46016 11.4939C1.35775 11.452 1.2647 11.3901 1.18646 11.3119C1.10822 11.2336 1.04634 11.1406 1.00444 11.0382C0.962537 10.9357 0.941453 10.826 0.942414 10.7154C0.943376 10.6047 0.966364 10.4954 1.01004 10.3937C1.05371 10.292 1.1172 10.2001 1.19679 10.1232L5.32179 5.9982L1.19679 1.8732C1.04499 1.71603 0.960996 1.50553 0.962894 1.28703C0.964793 1.06853 1.05243 0.859522 1.20694 0.705015C1.36145 0.550508 1.57046 0.462868 1.78896 0.460969C2.00745 0.45907 2.21795 0.543066 2.37512 0.694864L7.08929 5.40903Z" fill="currentColor"></path>
+                  </svg>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </main>

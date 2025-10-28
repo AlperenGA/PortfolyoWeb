@@ -1,35 +1,55 @@
 using Microsoft.EntityFrameworkCore;
 using ThreeLayerProject.Data;
-using ThreeLayerProject.Data.Repositories;
+using ThreeLayerProject.Entities.Models;
+using ThreeLayerProject.UI.Services;
+using ThreeLayerProject.UI.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔹 SQLite bağlantısı (lokal db dosyası)
+// SQLite DB
+var dbPath = "/Users/kumo/Desktop/ThreeLayerProject/ThreeLayerProject.Data/ThreeLayerProject.db";
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=three_layer_db.db"));
+    options.UseSqlite($"Data Source={dbPath}"));
 
-// 🔹 Repository bağımlılıkları
-builder.Services.AddScoped<IContactRepository, ContactRepository>();
+// Service kayıtları
+builder.Services.AddScoped<IUserService, UserService>();
 
-// 🔹 MVC servisi
+// MVC ve Session
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession();
 
 var app = builder.Build();
 
-// 🔹 Hata yönetimi ve güvenlik
+// ==========================
+// Database migration & seed
+// ==========================
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    // DB migration
+    db.Database.Migrate();
+
+    // DataSeeder ile admin ve roller
+    DataSeeder.Seed(db);
+
+    Console.WriteLine($"Database path: {db.Database.GetDbConnection().DataSource}");
+}
+
+// Hata sayfaları
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
-// 🔹 HTTP pipeline
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseSession();
 app.UseAuthorization();
 
-// 🔹 Varsayılan route
+// Default route
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
