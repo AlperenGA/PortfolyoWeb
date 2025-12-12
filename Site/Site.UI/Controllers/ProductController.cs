@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Site.Data;
+using Site.Data.Interfaces;
 using Site.Entities;
+using Site.UI.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,51 +19,97 @@ namespace Site.UI.Controllers
         // --- LIST / INDEX ---
         public IActionResult Index()
         {
-            IEnumerable<Product> products;
+            IEnumerable<Site.Entities.Product> entityProducts;
 
             try
             {
-                products = _productRepository.GetAllProducts();
+                entityProducts = _productRepository.GetAllProducts();
             }
             catch
             {
-                // Repository yoksa veya hata olursa örnek veriyle devam et
-                products = GetSampleProducts();
+                entityProducts = GetSampleProductsEntities(); // fallback (örnek veri)
             }
 
-            return View(products);
+            // 🔹 Entities → UI.Models dönüşümü
+            var uiProducts = entityProducts.Select(p => new Site.UI.Models.Product
+            {
+                Id = p.Id,
+                Title = p.Title,
+                Category = p.Category,         // <-- artık var
+                Description = p.Description,
+                ImageUrl = p.ImageUrl
+            }).ToList();
+
+            return View(uiProducts);
         }
 
         // --- DETAILS / SINGLE ITEM ---
         public IActionResult Details(int id)
         {
-            Product? product = null;
+            Site.Entities.Product? entityProduct = null;
 
             try
             {
-                product = _productRepository.GetProductById(id);
+                entityProduct = _productRepository.GetProductById(id);
             }
             catch
             {
-                // fallback içinden id’ye göre bul
-                product = GetSampleProducts().FirstOrDefault(p => p.Id == id);
+                entityProduct = GetSampleProductsEntities().FirstOrDefault(p => p.Id == id);
             }
 
-            if (product == null)
+            if (entityProduct == null)
                 return NotFound();
 
-            return View(product);
+            // 🔹 Entities → UI.Models dönüşümü
+            var uiModel = new Site.UI.Models.Product
+            {
+                Id = entityProduct.Id,
+                Title = entityProduct.Title,
+                Category = entityProduct.Category,
+                Description = entityProduct.Description,
+                ImageUrl = entityProduct.ImageUrl
+            };
+
+            return View(uiModel);
         }
 
-        // --- LOCAL FALLBACK METHOD ---
-        private IEnumerable<Product> GetSampleProducts()
+        // --- LOCAL FALLBACK METHOD (Entities tipinde veri) ---
+        private IEnumerable<Site.Entities.Product> GetSampleProductsEntities()
         {
-            return new List<Product>
+            return new List<Site.Entities.Product>
             {
-                new Product { Id = 1, Title = "Business Development", Description = "Comprehensive business growth strategy.", Categories = "Digital Marketing", ImageUrl = "/~/assets/img/project/card/1.jpg", Client = "TechVision", Owner = "Alperen Alev", Website = "https://example.com" },
-                new Product { Id = 2, Title = "Plan Development", Description = "Planning and execution consulting.", Categories = "Consulting", ImageUrl = "/~/assets/img/project/card/2.jpg", Client = "NextGen", Owner = "Alperen Alev", Website = "https://example.com" },
-                new Product { Id = 3, Title = "Risk Management", Description = "Analyzing and mitigating project risks.", Categories = "New Business", ImageUrl = "/~/assets/img/project/card/3.jpg", Client = "BizSafe", Owner = "Alperen Alev", Website = "https://example.com" },
-                new Product { Id = 4, Title = "Investment Idea", Description = "Innovative financial strategy design.", Categories = "Digital Marketing", ImageUrl = "/~/assets/img/project/card/4.jpg", Client = "InvestCo", Owner = "Alperen Alev", Website = "https://example.com" }
+                new Site.Entities.Product 
+                { 
+                    Id = 1, 
+                    Title = "Business Development", 
+                    Description = "Comprehensive business growth strategy.", 
+                    Category = "Digital Marketing", 
+                    ImageUrl = "~/assets/img/project/card/1.jpg" 
+                },
+                new Site.Entities.Product 
+                { 
+                    Id = 2, 
+                    Title = "Plan Development", 
+                    Description = "Planning and execution consulting.", 
+                    Category = "Consulting", 
+                    ImageUrl = "~/assets/img/project/card/2.jpg" 
+                },
+                new Site.Entities.Product 
+                { 
+                    Id = 3, 
+                    Title = "Risk Management", 
+                    Description = "Analyzing and mitigating project risks.", 
+                    Category = "New Business", 
+                    ImageUrl = "~/assets/img/project/card/3.jpg" 
+                },
+                new Site.Entities.Product 
+                { 
+                    Id = 4, 
+                    Title = "Investment Idea", 
+                    Description = "Innovative financial strategy design.", 
+                    Category = "Finance", 
+                    ImageUrl = "~/assets/img/project/card/4.jpg" 
+                }
             };
         }
     }

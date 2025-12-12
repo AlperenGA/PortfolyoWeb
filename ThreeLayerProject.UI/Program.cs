@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ThreeLayerProject.Data;
+using ThreeLayerProject.Data.Interface;
+using ThreeLayerProject.Data.Repositories;
 using ThreeLayerProject.Entities.Models;
 using ThreeLayerProject.UI.Services;
 using ThreeLayerProject.UI.Interfaces;
@@ -13,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Service kayıtları
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IContactRepository, ContactRepository>();
 
 // MVC ve Session
 builder.Services.AddControllersWithViews();
