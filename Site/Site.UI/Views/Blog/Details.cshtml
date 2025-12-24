@@ -1,0 +1,125 @@
+@model Site.UI.Models.BlogDetailViewModel
+
+@{
+    ViewData["Title"] = Model.Blog?.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    // Onaylanmış yorumları filtrele
+    var approvedComments = Model.Blog?.Comments?.Where(c => c.IsApproved).ToList() ?? new List<ThreeLayerProject.Entities.Models.BlogComment>();
+}
+
+<main>
+    <div class="page-banner overlay">
+        <div class="page-banner-content">
+            <div class="container text-center">
+                <h1 class="heading text-80 fw-700" data-aos="fade-up">@Model.Blog?.Title</h1>
+                </div>
+        </div>
+    </div>
+
+    <div class="page-blog-details mt-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-8"> <div class="blog-details">
+                        <div class="card-blog-list" data-aos="fade-up">
+                            
+                            <div class="card-blog-list-media radius18 mb-4">
+                                <div class="media">
+                                    @if(!string.IsNullOrEmpty(Model.Blog?.ImageUrl))
+                                    {
+                                        <img src="@Model.Blog.ImageUrl" alt="@Model.Blog.Title" width="1000" height="707" loading="lazy">
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="card-blog-content">
+                                <div class="card-blog-meta mb-3">
+                                    <div class="card-blog-meta-item text text-18">
+                                        <i class="bi bi-person me-2"></i> Admin
+                                    </div>
+                                    <div class="card-blog-meta-item text text-18">
+                                        <i class="bi bi-calendar me-2"></i> @Model.Blog?.CreatedDate.ToString("dd MMMM yyyy")
+                                    </div>
+                                    <div class="card-blog-meta-item text text-18">
+                                        <i class="bi bi-chat-dots me-2"></i> @approvedComments.Count Yorum
+                                    </div>
+                                </div>
+
+                                <div class="blog-description text-18">
+                                    @Html.Raw(Model.Blog?.Content)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comments-section scroll-margin mt-5" id="blog-comments">
+                        <h2 class="comment-section-heading heading text-36" data-aos="fade-up">
+                            @approvedComments.Count Yorum
+                        </h2>
+                        
+                        @if(TempData["Success"] != null)
+                        {
+                            <div class="alert alert-success mt-3">@TempData["Success"]</div>
+                        }
+
+                        <ul class="comments-area list-unstyled mt-4">
+                            @foreach(var comment in approvedComments)
+                            {
+                                <li class="comments-item mb-4 pb-4 border-bottom" data-aos="fade-up">
+                                    <div class="comment-details">
+                                        <div class="comments-top d-flex justify-content-between">
+                                            <h3 class="commentator-name heading text-22">@comment.FullName</h3>
+                                            <div class="comment-date text text-16 text-muted">
+                                                @comment.CreatedDate.ToString("dd MMM yyyy")
+                                            </div>
+                                        </div>
+                                        <p class="comment-bottom text text-16 mt-2">
+                                            @comment.CommentText
+                                        </p>
+                                    </div>
+                                </li>
+                            }
+                            @if(approvedComments.Count == 0)
+                            {
+                                <p class="text-muted">Henüz yorum yapılmamış. İlk yorumu sen yap!</p>
+                            }
+                        </ul>
+                    </div>
+
+                    <div class="comments-form mt-5 mb-5">
+                        <div class="comments-form-headings mb-4">
+                            <h2 class="heading text-36" data-aos="fade-up">Bir Yorum Bırakın</h2>
+                            <p class="text text-16" data-aos="fade-up">Email adresiniz yayınlanmayacaktır. * ile işaretli alanlar zorunludur.</p>
+                        </div>
+                        
+                        <form asp-action="PostComment" method="post" class="form contact-form">
+                            <input type="hidden" asp-for="NewComment.BlogId" value="@Model.Blog?.Id" />
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3" data-aos="fade-up">
+                                    <input asp-for="NewComment.FullName" class="form-control text-16" placeholder="Adınız Soyadınız *" required>
+                                </div>
+                                <div class="col-md-6 mb-3" data-aos="fade-up">
+                                    <input asp-for="NewComment.Email" type="email" class="form-control text-16" placeholder="Email Adresiniz *" required>
+                                </div>
+                                <div class="col-12 mb-3" data-aos="fade-up">
+                                    <textarea asp-for="NewComment.CommentText" class="form-control text-16" rows="5" placeholder="Yorumunuz *" required></textarea>
+                                </div>
+                                <div class="col-12" data-aos="fade-up">
+                                    <button type="submit" class="button button--primary">Yorumu Gönder</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                
+                <div class="col-12 col-lg-4">
+                    <aside class="blog-sidebar">
+                        </aside>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>

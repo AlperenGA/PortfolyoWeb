@@ -1,0 +1,90 @@
+@model ThreeLayerProject.Entities.Models.Project
+
+@{
+    ViewData["Title"] = "Yeni Proje Ekle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>Yeni Proje Ekle</h1>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Proje Detayları</h5>
+
+                    <form asp-action="Create" method="post" enctype="multipart/form-data">
+                        
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">Proje Başlığı</label>
+                            <div class="col-sm-10">
+                                <input asp-for="Title" class="form-control" required placeholder="Örn: Business Development">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">Kategori</label>
+                            <div class="col-sm-10">
+                                <input asp-for="Category" class="form-control" placeholder="Örn: Finance, Marketing">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">Müşteri (Client)</label>
+                            <div class="col-sm-10">
+                                <input asp-for="Client" class="form-control" placeholder="Örn: Hurraytheme">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">Proje Tarihi</label>
+                            <div class="col-sm-10">
+                                <input asp-for="ProjectDate" class="form-control" placeholder="Örn: 14 July, 2025">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">Web Sitesi</label>
+                            <div class="col-sm-10">
+                                <input asp-for="WebsiteUrl" class="form-control" placeholder="Örn: www.site.com">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">Kapak Resmi</label>
+                            <div class="col-sm-10">
+                                <input type="file" name="file" class="form-control" accept="image/*">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">Açıklama</label>
+                            <div class="col-sm-10">
+                                <textarea asp-for="Description" class="form-control" style="height: 200px" placeholder="Proje detaylarını buraya girin..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label">Yayınlansın mı?</label>
+                            <div class="col-sm-10">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" asp-for="IsPublished" checked>
+                                    <label class="form-check-label">Evet, sitede göster.</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Kaydet</button>
+                            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

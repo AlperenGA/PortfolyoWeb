@@ -7,8 +7,9 @@ namespace Site.Data
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
+            
         }
 
-        // Şu anda hiçbir DbSet yok çünkü e-posta veritabanına kaydedilmiyor.
+        
     }
 }

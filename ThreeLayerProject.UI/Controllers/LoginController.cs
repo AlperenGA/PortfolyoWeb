@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 using ThreeLayerProject.UI.Interfaces;
-using ThreeLayerProject.Entities.ViewModels;
-using ThreeLayerProject.Entities.Models;
+using ThreeLayerProject.UI.Models;
 
 namespace ThreeLayerProject.UI.Controllers
 {
@@ -15,52 +16,57 @@ namespace ThreeLayerProject.UI.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
         public IActionResult Index()
         {
+            // Zaten giriş yapmışsa Dashboard'a gönder
+            if (User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Index(UserLoginViewModel model)
+        public async Task<IActionResult> Index(UserLoginViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                TempData["ErrorMessage"] = "Please fill in all required fields.";
-                return View(model);
+                var user = await _userService.LoginAsync(model.Email, model.Password);
+
+                if (user != null)
+                {
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, user.Name),
+                        new Claim(ClaimTypes.Surname, user.Surname),
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var authProperties = new AuthenticationProperties
+                    {
+                        IsPersistent = model.RememberMe
+                    };
+
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        authProperties);
+
+                    return RedirectToAction("Index", "Dashboard");
+                }
+
+                ModelState.AddModelError("", "Email veya şifre hatalı.");
             }
 
-            // Admin user DB'den çekiliyor
-            var adminUser = _userService.GetAdminUser();
-            if (adminUser == null)
-            {
-                TempData["ErrorMessage"] = "Admin user not found. Contact system administrator.";
-                return View(model);
-            }
-
-            // Hash’li şifre kontrolü
-            var validUser = _userService.ValidateUser(adminUser.Username, model.Password);
-            if (validUser != null)
-            {
-                HttpContext.Session.SetString("UserId", adminUser.Id.ToString());
-                HttpContext.Session.SetString("IsAdmin", "true");
-                HttpContext.Session.SetString("IsLoggedIn", "true");
-
-                TempData["SuccessMessage"] = $"Welcome, {adminUser.FirstName}!";
-                return RedirectToAction("Index", "Home");
-            }
-
-            TempData["ErrorMessage"] = "Invalid username or password.";
             return View(model);
         }
 
-        [HttpGet]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.Clear();
-            TempData["SuccessMessage"] = "You have been logged out successfully.";
-            return RedirectToAction("Index");
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Login");
         }
     }
 }

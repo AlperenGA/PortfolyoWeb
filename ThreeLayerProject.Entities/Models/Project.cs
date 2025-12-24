@@ -1,29 +1,29 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ThreeLayerProject.Entities.Models
 {
     public class Project : BaseEntity
     {
-        [Required, MaxLength(200)]
+        [Required]
+        [MaxLength(200)]
         public string Title { get; set; } = string.Empty;
 
-        [MaxLength(2000)]
-        public string? Description { get; set; }
+        [MaxLength(100)]
+        public string Category { get; set; } = string.Empty; // Örn: Web, Mobile, Branding
 
-        [MaxLength(200)]
-        public string? Url { get; set; }
+        public string? ImageUrl { get; set; }
 
-        [MaxLength(200)]
-        public string? RepoUrl { get; set; }
+        public string Description { get; set; } = string.Empty;
 
-        public DateTime? StartedAt { get; set; }
-        public DateTime? EndedAt { get; set; }
+        public string Client { get; set; } = string.Empty;
+        
+        public string ProjectDate { get; set; } = string.Empty; // Örn: "14 July, 2025"
 
-        public int? UserId { get; set; }
-        public User? User { get; set; }
+        public string WebsiteUrl { get; set; } = string.Empty;
 
-        public ICollection<ProjectSkill>? ProjectSkills { get; set; }
+        public bool IsPublished { get; set; } = true;
+
+        // İlişki: Bir projenin birden fazla yorumu olabilir
+        public virtual ICollection<ProjectComment> Comments { get; set; } = new List<ProjectComment>();
     }
 }

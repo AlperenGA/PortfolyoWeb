@@ -1,13 +1,24 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ThreeLayerProject.Data;
+using ThreeLayerProject.Entities.Models; 
 
 namespace Site.UI.Controllers
 {
     public class AboutController : Controller
     {
-        public IActionResult Index()
+        private readonly AppDbContext _context;
+
+        public AboutController(AppDbContext context)
         {
-            // Views/About/Index.cshtml dosyasını döndürür
-            return View();
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            // Veritabanındaki ilk kaydı getir. Yoksa hata vermemesi için boş nesne oluştur.
+            var about = await _context.AboutMe.FirstOrDefaultAsync();
+            return View(about ?? new AboutMe());
         }
     }
 }

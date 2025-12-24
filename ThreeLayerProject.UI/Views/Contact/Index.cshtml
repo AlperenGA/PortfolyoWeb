@@ -1,109 +1,80 @@
-@model ThreeLayerProject.UI.Models.ContactViewModel
+@model IEnumerable<ThreeLayerProject.Entities.Models.ContactMessage>
+
 @{
-    ViewData["Title"] = "Contact Page";
+    ViewData["Title"] = "Gelen Mesajlar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <main id="main" class="main">
-
-        <div class="pagetitle">
-            <h1>Contact</h1>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li class="breadcrumb-item">Pages</li>
-                    <li class="breadcrumb-item active">Contact</li>
-                </ol>
-            </nav>
-        </div><!-- End Page Title -->
-
-        <section class="section contact">
-            <div class="row gy-4">
-
-                <!-- Contact Info -->
-                <div class="col-xl-6">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="info-box card">
-                                <i class="bi bi-geo-alt"></i>
-                                <h3>Address</h3>
-                                <p>A108 Adam Street,<br>New York, NY 535022</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="info-box card">
-                                <i class="bi bi-telephone"></i>
-                                <h3>Call Us</h3>
-                                <p>+1 5589 55488 55<br>+1 6678 254445 41</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="info-box card">
-                                <i class="bi bi-envelope"></i>
-                                <h3>Email Us</h3>
-                                <p>info@example.com<br>contact@example.com</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="info-box card">
-                                <i class="bi bi-clock"></i>
-                                <h3>Open Hours</h3>
-                                <p>Monday - Friday<br>9:00AM - 05:00PM</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contact Form -->
-                <div class="col-xl-6">
-                    <div class="card p-4">
-                        <form asp-controller="Contact" asp-action="Index" method="post" class="row g-3">
-
-                            <div asp-validation-summary="All" class="text-danger"></div>
-
-                            <div class="col-md-6">
-                                <input asp-for="Name" class="form-control" placeholder="Your Name" />
-                                <span asp-validation-for="Name" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-6">
-                                <input asp-for="Email" class="form-control" placeholder="Your Email" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-12">
-                                <input asp-for="Subject" class="form-control" placeholder="Subject" />
-                                <span asp-validation-for="Subject" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-12">
-                                <textarea asp-for="Message" class="form-control" rows="6" placeholder="Message"></textarea>
-                                <span asp-validation-for="Message" class="text-danger"></span>
-                            </div>
-
-                            <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-primary px-4">Send Message</button>
-                            </div>
-
-                            @if (TempData["SuccessMessage"] != null)
-                            {
-                                <div class="col-md-12">
-                                    <div class="alert alert-success text-center mt-3">
-                                        @TempData["SuccessMessage"]
-                                    </div>
-                                </div>
-                            }
-                        </form>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-    </main>
+<div class="pagetitle">
+    <h1>Gelen Kutusu</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
+            <li class="breadcrumb-item active">Mesajlar</li>
+        </ol>
+    </nav>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ziyaretçi Mesajları</h5>
+
+                    <table class="table datatable table-hover">
+                        <thead>
+                            <tr>
+                                <th>Durum</th>
+                                <th>Gönderen</th>
+                                <th>Email</th>
+                                <th>Konu</th>
+                                <th>Tarih</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="@(!item.IsRead ? "fw-bold table-light" : "")">
+                                    <td>
+                                        @if (!item.IsRead)
+                                        {
+                                            <span class="badge bg-danger"><i class="bi bi-envelope-fill"></i> Yeni</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary"><i class="bi bi-envelope-open"></i> Okundu</span>
+                                        }
+                                    </td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.Subject</td>
+                                    <td>@item.CreatedDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td>
+                                        @if (!item.IsRead)
+                                        {
+                                            <a asp-action="MarkAsRead" asp-route-id="@item.Id" class="btn btn-sm btn-primary" title="Okundu İşaretle">
+                                                <i class="bi bi-check2-all"></i>
+                                            </a>
+                                        }
+                                        
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" onclick="return confirm('Bu mesajı silmek istediğinize emin misiniz?');" title="Sil">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" class="text-muted small ps-5 pb-3 pt-0 border-bottom-0">
+                                        <i class="bi bi-chat-right-quote me-2"></i> @item.Message
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

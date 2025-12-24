@@ -1,56 +1,57 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ThreeLayerProject.Data;
 using Site.UI.Models;
-using System.Net.Mail;
+using ThreeLayerProject.Entities.Models;
 
 namespace Site.UI.Controllers
 {
     public class ContactController : Controller
     {
-        private readonly SmtpClient _smtpClient;
+        private readonly AppDbContext _context;
 
-        public ContactController(SmtpClient smtpClient)
+        public ContactController(AppDbContext context)
         {
-            _smtpClient = smtpClient;
+            _context = context;
         }
 
+        // SAYFAYI GÖSTER (GET)
         [HttpGet]
-        public IActionResult Index() => View();
+        public async Task<IActionResult> Index()
+        {
+            var viewModel = new ContactPageViewModel
+            {
+                // Veritabanındaki iletişim bilgilerini çek
+                ContactInfo = await _context.ContactInfos.FirstOrDefaultAsync()
+            };
 
+            return View(viewModel);
+        }
+
+        // MESAJ GÖNDER (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(ContactFormModel model)
+        public async Task<IActionResult> SendMessage(ContactPageViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            try
+            if (ModelState.IsValid)
             {
-                var message = new MailMessage
-                {
-                    From = new MailAddress("seninmailin@gmail.com"),
-                    Subject = $"📩 New Message: {model.Subject}",
-                    Body = $@"
-                        Name: {model.Name}
-                        Email: {model.Email}
-                        Subject: {model.Subject}
-                        Message:
-                        {model.Message}
-                    ",
-                    IsBodyHtml = false
-                };
-                message.To.Add("alici@gmail.com");
+                var message = model.ContactMessage;
+                
+                // Gerekli sistem alanlarını doldur
+                message.CreatedDate = DateTime.Now;
+                message.IsRead = false; // Yeni mesaj okunmadı olarak başlar
+                message.IsActive = true;
 
-                _smtpClient.Send(message);
+                _context.ContactMessages.Add(message);
+                await _context.SaveChangesAsync();
 
-                ViewBag.Success = "✅ Your message has been sent successfully!";
-                ModelState.Clear();
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Error = $"❌ Error sending email: {ex.Message}";
+                TempData["Success"] = "Mesajınız başarıyla gönderildi. En kısa sürede dönüş yapacağız.";
+                return RedirectToAction(nameof(Index));
             }
 
-            return View();
+            // Hata varsa bilgileri tekrar çekip sayfayı geri döndür
+            model.ContactInfo = await _context.ContactInfos.FirstOrDefaultAsync();
+            return View("Index", model);
         }
     }
 }

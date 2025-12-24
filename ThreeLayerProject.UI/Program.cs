@@ -1,45 +1,56 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using ThreeLayerProject.Data;
-using ThreeLayerProject.Data.Interface;
-using ThreeLayerProject.Data.Repositories;
-using ThreeLayerProject.Entities.Models;
 using ThreeLayerProject.UI.Services;
 using ThreeLayerProject.UI.Interfaces;
+// Repository ve Interface namespace'lerini ekledik
+using ThreeLayerProject.Data.Interfaces;
+using ThreeLayerProject.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// SQLite DB
-var dbPath = "/Users/kumo/Desktop/ThreeLayerProject/ThreeLayerProject.Data/ThreeLayerProject.db";
+// 1. Veritabanı Yolu
+var dbPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "ThreeLayerProject.Data", "ThreeLayerProject.db");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite($"Data Source={dbPath}"));
 
-// Service kayıtları
+// 2. GÜVENLİK AYARLARI
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Login/Index";
+        options.LogoutPath = "/Login/Logout";
+        options.AccessDeniedPath = "/Login/Index";
+        options.Cookie.Name = "PortfolyoAdminCookie";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+        options.SlidingExpiration = true;
+    });
+
+// 3. SERVİSLERİN KAYDI (Dependency Injection)
 builder.Services.AddScoped<IUserService, UserService>();
+
+// Repository kaydı (Artık hata vermez çünkü Interface ve Class eşleşiyor)
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 
-// MVC ve Session
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 
 var app = builder.Build();
 
-// ==========================
-// Database migration & seed
-// ==========================
+// 4. SEED DATA
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-    // DB migration
-    db.Database.Migrate();
-
-    // DataSeeder ile admin ve roller
-    DataSeeder.Seed(db);
-
-    Console.WriteLine($"Database path: {db.Database.GetDbConnection().DataSource}");
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    try 
+    {
+        DataSeeder.Seed(context); 
+    }
+    catch(Exception ex)
+    {
+        Console.WriteLine("Seed Hatası: " + ex.Message);
+    }
 }
 
-// Hata sayfaları
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -48,13 +59,16 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseRouting();
+
 app.UseSession();
+
+app.UseAuthentication(); 
 app.UseAuthorization();
 
-// Default route
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=Index}/{id?}");
 
 app.Run();

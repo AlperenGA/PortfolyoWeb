@@ -1,0 +1,92 @@
+@model ThreeLayerProject.Entities.Models.AboutMe
+
+@{
+    ViewData["Title"] = "Hakkımda Düzenle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>Hakkımda Yönetimi</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
+            <li class="breadcrumb-item active">Hakkımda</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-10">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Kurumsal Bilgileri Güncelle</h5>
+
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="bi bi-check-circle me-1"></i>
+                            @TempData["Success"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <form asp-action="Index" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <div class="row mb-3">
+                            <label for="FullName" class="col-md-4 col-lg-3 col-form-label">Ana Başlık (Heading)</label>
+                            <div class="col-md-8 col-lg-9">
+                                <input asp-for="FullName" class="form-control" id="FullName" placeholder="Örn: Redesigning business for solutions">
+                                <span class="text-muted small">Site ön yüzündeki büyük başlık alanı.</span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="ShortDescription" class="col-md-4 col-lg-3 col-form-label">Kısa Açıklama (Ünvan/Slogan)</label>
+                            <div class="col-md-8 col-lg-9">
+                                <input asp-for="ShortDescription" class="form-control" id="ShortDescription" placeholder="Örn: Our mission is to empowers businesses...">
+                                <span class="text-muted small">Başlığın hemen altındaki kısa metin.</span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="LongDescription" class="col-md-4 col-lg-3 col-form-label">Detaylı İçerik</label>
+                            <div class="col-md-8 col-lg-9">
+                                <textarea asp-for="LongDescription" class="form-control tinymce-editor" style="height: 300px"></textarea>
+                                <span class="text-muted small">Maddeli listeler ve detaylı tanıtım metni buraya.</span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="ImageUpload" class="col-md-4 col-lg-3 col-form-label">Kurumsal Görsel</label>
+                            <div class="col-md-8 col-lg-9">
+                                @if (!string.IsNullOrEmpty(Model?.ImageUrl))
+                                {
+                                    <div class="mb-2">
+                                        <img src="@Model.ImageUrl" alt="Mevcut Görsel" style="max-width: 200px; border-radius: 8px;" class="border">
+                                    </div>
+                                }
+                                <input class="form-control" type="file" id="ImageUpload" name="file" accept="image/*">
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Değişiklikleri Kaydet
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="col-lg-2">
+            </div>
+
+    </div>
+</section>

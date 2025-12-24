@@ -1,9 +1,4 @@
-using System;
-using System.Linq;
 using ThreeLayerProject.Entities.Models;
-using ThreeLayerProject.Entities.Enums;
-using Microsoft.EntityFrameworkCore;
-using BCrypt.Net;
 
 namespace ThreeLayerProject.Data
 {
@@ -11,55 +6,43 @@ namespace ThreeLayerProject.Data
     {
         public static void Seed(AppDbContext context)
         {
-            // Migration'ları uygula
-            context.Database.Migrate();
+            // Veritabanı yoksa oluştur
+            context.Database.EnsureCreated();
 
-            // ==========================
-            // Rol kontrol ve ekleme
-            // ==========================
-            var adminRole = context.Roles.FirstOrDefault(r => r.Name == "Admin");
-            if (adminRole == null)
+            // Eğer hiç kullanıcı yoksa, varsayılan Admin'i ekle
+            if (!context.Users.Any())
             {
-                adminRole = new Role { Name = "Admin" };
-                context.Roles.Add(adminRole);
-                context.SaveChanges();
-                Console.WriteLine("✅ Admin rolü eklendi.");
-            }
-
-            // ==========================
-            // Admin kullanıcı kontrol ve ekleme
-            // ==========================
-            if (!context.Users.Any(u => u.Username == "admin"))
-            {
-                var adminUser = new User
+                var admin = new User
                 {
-                    Username = "admin",
-                    Email = "admin@example.com",
-                    FirstName = "System",
-                    LastName = "Administrator",
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("1234"),
-                    AvatarUrl = "/images/profiles/default.png",
-                    Status = StatusEnum.Active,
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
+                    Name = "Admin",
+                    Surname = "User",
+                    Email = "admin@admin.com",
+                    // Not: Şimdilik şifreyi düz metin yazıyoruz. 
+                    // İleride UI katmanında UserService içinde bunu MD5 veya SHA256 ile hashleyeceğiz.
+                    // Şifre: 123456
+                    PasswordHash = "123456", 
+                    CreatedDate = DateTime.Now,
+                    IsActive = true
                 };
 
-                context.Users.Add(adminUser);
+                context.Users.Add(admin);
                 context.SaveChanges();
-
-                // Admin rolünü ata
-                context.UserRoles.Add(new UserRole
+            }
+            
+            // Varsayılan İletişim Bilgisi (Boş kalmasın)
+            if (!context.ContactInfos.Any())
+            {
+                context.ContactInfos.Add(new ContactInfo
                 {
-                    UserId = adminUser.Id,
-                    RoleId = adminRole.Id
+                    Address = "İstanbul, Türkiye",
+                    Email = "info@sirket.com",
+                    Phone = "+90 555 000 0000",
+                    MainHeading = "Birlikte Harika Projeler Yapalım",
+                    MainDescription = "Modern çözümler ve yenilikçi tasarımlar.",
+                    Stat1Text = "100+ Proje",
+                    Stat2Text = "50+ Mutlu Müşteri"
                 });
                 context.SaveChanges();
-
-                Console.WriteLine("✅ Admin kullanıcısı başarıyla eklendi.");
-            }
-            else
-            {
-                Console.WriteLine("ℹ️ Admin kullanıcısı zaten mevcut, seed atlandı.");
             }
         }
     }

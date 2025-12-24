@@ -1,0 +1,127 @@
+@model ThreeLayerProject.UI.Models.CommentsViewModel
+
+@{
+    ViewData["Title"] = "Yorum Yönetimi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="pagetitle">
+    <h1>Yorum Yönetimi</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
+            <li class="breadcrumb-item active">Yorumlar</li>
+        </ol>
+    </nav>
+</div>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body pt-3">
+
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#blog-comments">
+                                Blog Yorumları (@Model.BlogComments.Count)
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#project-comments">
+                                Proje Yorumları (@Model.ProjectComments.Count)
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content pt-2">
+
+                        <div class="tab-pane fade show active" id="blog-comments">
+                            <h5 class="card-title">Blog Yazılarına Gelen Yorumlar</h5>
+                            
+                            <table class="table datatable table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Ad Soyad</th>
+                                        <th>Yorum</th>
+                                        <th>İlgili İçerik</th>
+                                        <th>Tarih</th>
+                                        <th>Durum</th>
+                                        <th>İşlem</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.BlogComments)
+                                    {
+                                        <tr>
+                                            <td>@item.FullName <br> <small class="text-muted">@item.Email</small></td>
+                                            <td style="max-width: 300px;">@item.CommentText</td>
+                                            <td><span class="badge bg-info text-dark">@item.Blog?.Title</span></td>
+                                            <td>@item.CreatedDate.ToString("dd.MM.yyyy")</td>
+                                            <td>
+                                                @if (item.IsApproved)
+                                                {
+                                                    <span class="badge bg-success">Onaylı</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-warning text-dark">Bekliyor</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a asp-action="ApproveBlogComment" asp-route-id="@item.Id" class="btn btn-sm btn-success" title="Durumu Değiştir"><i class="bi bi-check-circle"></i></a>
+                                                <a asp-action="DeleteBlogComment" asp-route-id="@item.Id" class="btn btn-sm btn-danger" onclick="return confirm('Silmek istediğine emin misin?')" title="Sil"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="tab-pane fade" id="project-comments">
+                            <h5 class="card-title">Projelere Gelen Yorumlar</h5>
+                             <table class="table datatable table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Ad Soyad</th>
+                                        <th>Yorum</th>
+                                        <th>İlgili İçerik</th>
+                                        <th>Tarih</th>
+                                        <th>Durum</th>
+                                        <th>İşlem</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.ProjectComments)
+                                    {
+                                        <tr>
+                                            <td>@item.FullName <br> <small class="text-muted">@item.Email</small></td>
+                                            <td style="max-width: 300px;">@item.CommentText</td>
+                                            <td><span class="badge bg-primary">@item.Project?.Title</span></td>
+                                            <td>@item.CreatedDate.ToString("dd.MM.yyyy")</td>
+                                            <td>
+                                                @if (item.IsApproved)
+                                                {
+                                                    <span class="badge bg-success">Onaylı</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-warning text-dark">Bekliyor</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a asp-action="ApproveProjectComment" asp-route-id="@item.Id" class="btn btn-sm btn-success" title="Durumu Değiştir"><i class="bi bi-check-circle"></i></a>
+                                                <a asp-action="DeleteProjectComment" asp-route-id="@item.Id" class="btn btn-sm btn-danger" onclick="return confirm('Silmek istediğine emin misin?')" title="Sil"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

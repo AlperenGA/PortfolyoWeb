@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
-    <ProjectReference Include="..\Site.Data\Site.Data.csproj" />
-    <ProjectReference Include="..\Site.Entities\Site.Entities.csproj" />
+    <ProjectReference Include="..\..\ThreeLayerProject.Data\ThreeLayerProject.Data.csproj" />
+    <ProjectReference Include="..\..\ThreeLayerProject.Entities\ThreeLayerProject.Entities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

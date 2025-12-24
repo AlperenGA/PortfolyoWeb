@@ -1,52 +1,50 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ThreeLayerProject.Data.Repositories;
-using ThreeLayerProject.Entities;
-using ThreeLayerProject.UI.Models;
-using ThreeLayerProject.Entities.Models;
-using System;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using ThreeLayerProject.Data;
 
 namespace ThreeLayerProject.UI.Controllers
 {
+    [Authorize]
     public class ContactController : Controller
     {
-        private readonly IContactRepository _contactRepository;
+        private readonly AppDbContext _context;
 
-        public ContactController(IContactRepository contactRepository)
+        public ContactController(AppDbContext context)
         {
-            _contactRepository = contactRepository ?? throw new ArgumentNullException(nameof(contactRepository));
+            _context = context;
         }
 
-        // GET: /Contact/
-        [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(new ContactViewModel());
+            // Mesajları tarihe göre (yeni en üstte) getir
+            var messages = await _context.ContactMessages
+                                         .OrderByDescending(m => m.CreatedDate)
+                                         .ToListAsync();
+            return View(messages);
         }
 
-        // POST: /Contact/
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(ContactViewModel model)
+        // Mesajı Silme
+        public async Task<IActionResult> Delete(int id)
         {
-            if (model == null) 
-                throw new ArgumentNullException(nameof(model));
-
-            if (!ModelState.IsValid)
-                return View(model);
-
-            var entity = new ContactMessage
+            var message = await _context.ContactMessages.FindAsync(id);
+            if (message != null)
             {
-                Name = model.Name ?? string.Empty,
-                Email = model.Email ?? string.Empty,
-                Subject = model.Subject ?? string.Empty,
-                Message = model.Message ?? string.Empty,
-                CreatedAt = DateTime.UtcNow
-            };
+                _context.ContactMessages.Remove(message);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
 
-            await _contactRepository.AddAsync(entity);
-
-            TempData["SuccessMessage"] = "Your message has been sent. Thank you!";
+        // Detay Görüntüleme (Opsiyonel - Modalsız basit gösterim için)
+        public async Task<IActionResult> MarkAsRead(int id)
+        {
+            var message = await _context.ContactMessages.FindAsync(id);
+            if (message != null)
+            {
+                message.IsRead = true;
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
     }

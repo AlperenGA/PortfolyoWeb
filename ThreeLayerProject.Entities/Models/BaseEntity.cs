@@ -1,18 +1,15 @@
 using System;
-using ThreeLayerProject.Entities.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace ThreeLayerProject.Entities.Models
 {
-    /// <summary>
-    /// Tüm entity sınıflarının kalıtacağı temel sınıf.
-    /// Ortak alanlar: Id, CreatedAt, UpdatedAt, Status, IsActive
-    /// </summary>
-    public abstract class BaseEntity
+    public class BaseEntity
     {
+        [Key]
         public int Id { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime? UpdatedAt { get; set; }
-        public StatusEnum Status { get; set; } = StatusEnum.Active;
-        public bool IsActive => Status == StatusEnum.Active;
+        
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        
+        public bool IsActive { get; set; } = true; // Veriyi silmek yerine pasife çekmek için
     }
 }
