@@ -52,7 +52,7 @@ namespace ThreeLayerProject.UI.Controllers
                     {
                         await file.CopyToAsync(fileStream);
                     }
-                    blog.ImageUrl = "/assetsAdmin/img/blog/" + uniqueFileName;
+                    blog.ImageUrl = "/assetsAdmin/img/blog/"+ uniqueFileName;
                 }
 
                 blog.CreatedDate = DateTime.Now;

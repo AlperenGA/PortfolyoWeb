@@ -1,37 +1,45 @@
 using Microsoft.EntityFrameworkCore;
-using ThreeLayerProject.Data; // AppDbContext'in olduğu namespace (Data katmanını referans aldık)
+using Microsoft.Extensions.FileProviders; // Bu gerekli!
+using ThreeLayerProject.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Veritabanı Bağlantısı (Admin Paneliyle AYNI veritabanı olmalı)
-// appsettings.json dosyasından "DefaultConnection" ismini okur.
+// Veritabanı Bağlantısı
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 2. MVC Servislerini Ekle (Controller ve View kullanımı için)
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// 3. Hata Yönetimi ve Güvenlik (Production ortamı için)
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // Varsayılan HSTS değeri 30 gündür. Production için artırılabilir.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 
-// 4. Statik Dosyalar (CSS, JS, Resimler - wwwroot klasörü için şart)
+// 1. Kendi wwwroot klasörünü kullan (CSS/JS için)
 app.UseStaticFiles();
 
-app.UseRouting();
+// 2. Admin Panelinin wwwroot klasörünü SANKİ BURADAYMIŞ GİBİ kullan
 
-// 5. Yetkilendirme (Şu an site tarafında login yok ama standart kalabilir)
+var adminWwwRootPath = "/Users/kumo/Desktop/ThreeLayerProject/ThreeLayerProject.UI/wwwroot";
+
+if (Directory.Exists(adminWwwRootPath))
+{
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(adminWwwRootPath),
+        // RequestPath vermiyoruz, böylece dosyalar kök dizindeymiş gibi davranır.
+        
+    });
+}
+
+app.UseRouting();
 app.UseAuthorization();
 
-// 6. Rotalama (Varsayılan olarak Home/Index açılır)
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

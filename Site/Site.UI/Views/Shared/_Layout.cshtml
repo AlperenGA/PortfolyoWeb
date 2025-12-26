@@ -102,36 +102,37 @@
                     </svg>
                   </drawer-opener>
                 </div>
-
                 <ul class="header-menu list-unstyled">
-                  <!-- 🏠 Home -->
-                  <li class="nav-item">
-                    <a class="menu-link menu-link-main" asp-controller="Home" asp-action="Index">
-                      Home
-                    </a>
-                  </li>
+                    <li class="nav-item">
+                      <a class="menu-link menu-link-main" asp-controller="Home" asp-action="Index">
+                        Home
+                      </a>
+                    </li>
 
-                  <!-- ℹ️ About -->
-                  <li class="nav-item">
-                    <a class="menu-link menu-link-main" asp-controller="About" asp-action="Index">
-                      About Us
-                    </a>
-                  </li>
+                    <li class="nav-item">
+                      <a class="menu-link menu-link-main" asp-controller="About" asp-action="Index">
+                        About Us
+                      </a>
+                    </li>
 
-                  <!-- 🛍️ Products -->
-                  <li class="nav-item">
-                    <a class="menu-link menu-link-main" asp-controller="Product" asp-action="Index">
-                      Products
-                    </a>
-                  </li>
+                    <li class="nav-item">
+                      <a class="menu-link menu-link-main" asp-controller="Project" asp-action="Index">
+                        Projects
+                      </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                      <a class="menu-link menu-link-main" asp-controller="Blog" asp-action="Index">
+                        Blog
+                      </a>
+                    </li>
 
-                  <!-- ✉️ Contact -->
-                  <li class="nav-item">
-                    <a class="menu-link menu-link-main" asp-controller="Contact" asp-action="Index">
-                      Contact
-                    </a>
-                  </li>
-                </ul>
+                    <li class="nav-item">
+                      <a class="menu-link menu-link-main" asp-controller="Contact" asp-action="Index">
+                        Contact
+                      </a>
+                    </li>
+                  </ul>   
               </nav>
             </drawer-menu>
 
@@ -404,18 +405,16 @@
                 </li>
                 <li>
                   <a asp-controller="About" asp-action="Index" class="text text-16 link" aria-label="About Us">
-
                   About Us
-
                   </a>
                 </li>
-                <li>
-                  <a asp-controller="Product" asp-action="Index" class="text text-16 link" aria-label="Products">
 
-                  Products
+                  <li>
+                      <a class="menu-link menu-link-main" asp-controller="Project" asp-action="Index">
+                        Projects
+                      </a>
+                    </li>
 
-                  </a>
-                </li>
                 <li>
                   <a asp-controller="Contact" asp-action="Index" class="text text-16 link" aria-label="Contact">
                     Contact

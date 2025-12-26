@@ -13,14 +13,15 @@
         <div class="page-banner-content">
             <div class="container text-center">
                 <h1 class="heading text-80 fw-700" data-aos="fade-up">@Model.Blog?.Title</h1>
-                </div>
+            </div>
         </div>
     </div>
 
     <div class="page-blog-details mt-100">
         <div class="container">
             <div class="row">
-                <div class="col-12 col-lg-8"> <div class="blog-details">
+                <div class="col-12 col-lg-8"> 
+                    <div class="blog-details">
                         <div class="card-blog-list" data-aos="fade-up">
                             
                             <div class="card-blog-list-media radius18 mb-4">
@@ -59,7 +60,9 @@
                         
                         @if(TempData["Success"] != null)
                         {
-                            <div class="alert alert-success mt-3">@TempData["Success"]</div>
+                            <div class="alert alert-success mt-3 p-3 text-center text-18" style="background-color: #d4edda; color: #155724; border-radius: 8px;">
+                                @TempData["Success"]
+                            </div>
                         }
 
                         <ul class="comments-area list-unstyled mt-4">
@@ -81,7 +84,7 @@
                             }
                             @if(approvedComments.Count == 0)
                             {
-                                <p class="text-muted">Henüz yorum yapılmamış. İlk yorumu sen yap!</p>
+                                <p class="text-muted text-16">Henüz yorum yapılmamış. İlk yorumu sen yap!</p>
                             }
                         </ul>
                     </div>
@@ -92,8 +95,9 @@
                             <p class="text text-16" data-aos="fade-up">Email adresiniz yayınlanmayacaktır. * ile işaretli alanlar zorunludur.</p>
                         </div>
                         
-                        <form asp-action="PostComment" method="post" class="form contact-form">
-                            <input type="hidden" asp-for="NewComment.BlogId" value="@Model.Blog?.Id" />
+                        <form asp-action="PostComment" asp-controller="Blog" method="post" class="form contact-form">
+                            
+                            @Html.AntiForgeryToken() <input type="hidden" name="NewComment.BlogId" value="@Model.Blog?.Id" />
 
                             <div class="row">
                                 <div class="col-md-6 mb-3" data-aos="fade-up">

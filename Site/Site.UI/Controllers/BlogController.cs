@@ -45,32 +45,51 @@ namespace Site.UI.Controllers
 
         // YORUM GÖNDERME (Post Comment)
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PostComment(BlogDetailViewModel model)
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> PostComment(BlogDetailViewModel model)
+{
+    // 1. BlogId kontrolü
+    if (model.NewComment.BlogId <= 0)
+    {
+        Console.WriteLine("HATA: BlogId 0 veya boş geldi!");
+        return RedirectToAction("Index"); // Hata olursa listeye dön
+    }
+
+    // 2. Model Doğrulama (Ad, Email, Yorum boş mu?)
+    // Not: ModelState.IsValid kontrolünü geçici olarak esnetiyoruz ki hatayı görelim.
+    if (!string.IsNullOrEmpty(model.NewComment.FullName) && 
+        !string.IsNullOrEmpty(model.NewComment.CommentText))
+    {
+        var comment = new BlogComment
         {
-            // BlogId boş gelmesin diye hidden field'dan alıyoruz
-            var blogId = model.NewComment.BlogId;
+            BlogId = model.NewComment.BlogId,
+            FullName = model.NewComment.FullName,
+            Email = model.NewComment.Email,
+            CommentText = model.NewComment.CommentText,
+            CreatedDate = DateTime.Now,
+            IsActive = true,
+            IsApproved = false // ÖNEMLİ: Varsayılan olarak onay bekler
+        };
 
-            if (ModelState.IsValid) // Basit validasyon (Ad, Email, Yorum dolu mu?)
-            {
-                var comment = model.NewComment;
-                comment.CreatedDate = DateTime.Now;
-                comment.IsApproved = false; // Yorumlar admin onayı bekler
+        _context.BlogComments.Add(comment);
+        await _context.SaveChangesAsync();
 
-                _context.BlogComments.Add(comment);
-                await _context.SaveChangesAsync();
-
-                TempData["Success"] = "Yorumunuz gönderildi ve onay bekliyor.";
-                return RedirectToAction(nameof(Details), new { id = blogId });
-            }
-
-            // Hata varsa sayfayı tekrar yükle
-            var blog = await _context.Blogs
-                                     .Include(b => b.Comments)
-                                     .FirstOrDefaultAsync(b => b.Id == blogId);
-            
-            model.Blog = blog;
-            return View("Details", model);
+        Console.WriteLine("BAŞARILI: Yorum veritabanına kaydedildi.");
+        TempData["Success"] = "Yorumunuz alındı, onaylandıktan sonra yayınlanacaktır.";
+        
+        return RedirectToAction("Details", new { id = model.NewComment.BlogId });
+    }
+    else
+    {
+        // Hata varsa terminale yazalım
+        foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+        {
+            Console.WriteLine($"VALIDATION HATASI: {error.ErrorMessage}");
         }
+    }
+
+    // Hata varsa sayfaya geri dön
+    return RedirectToAction("Details", new { id = model.NewComment.BlogId });
+}
     }
 }

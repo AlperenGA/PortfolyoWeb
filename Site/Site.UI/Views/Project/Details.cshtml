@@ -1,130 +1,125 @@
-@model ThreeLayerProject.Entities.Models.Project
+@model Site.UI.Models.ProjectDetailViewModel
 
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = Model.Project?.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Onaylı yorumları filtrele
+    var approvedComments = Model.Project?.Comments?.Where(c => c.IsApproved).ToList() ?? new List<ThreeLayerProject.Entities.Models.ProjectComment>();
 }
 
 <main>
-      <div class="page-banner overlay">
-        <picture class="media media-bg">
-          <source media="(max-width: 575px)" srcset="~/assets/img/banner/page-banner-575.jpg">
-          <source media="(max-width: 991px)" srcset="~/assets/img/banner/page-banner-991.jpg">
-          <img src="~/assets/img/banner/page-banner.jpg" width="1920" height="520" loading="eager" alt="Page Banner Image">
-        </picture>
+    <div class="page-banner overlay">
         <div class="page-banner-content">
-          <div class="container text-center">
-            <h1 class="heading text-80 fw-700 aos-init aos-animate" data-aos="fade-up">
-              @Model.Title
-            </h1>
-            <ul class="breadcrumb list-unstyled aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-              <li>
-                 <a asp-controller="Home" asp-action="Index" class="text text-18" aria-label="Home Page">
-                  Anasayfa
-                </a>
-              </li>
-              <li>
-                <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M7.08929 5.40903C7.24552 5.5653 7.33328 5.77723 7.33328 5.9982C7.33328 6.21917 7.24552 6.43109 7.08929 6.58736L2.37512 11.3015C2.29825 11.3811 2.2063 11.4446 2.10463 11.4883C2.00296 11.532 1.89361 11.5549 1.78296 11.5559C1.67231 11.5569 1.56258 11.5358 1.46016 11.4939C1.35775 11.452 1.2647 11.3901 1.18646 11.3119C1.10822 11.2336 1.04634 11.1406 1.00444 11.0382C0.962537 10.9357 0.941453 10.826 0.942414 10.7154C0.943376 10.6047 0.966364 10.4954 1.01004 10.3937C1.05371 10.292 1.1172 10.2001 1.19679 10.1232L5.32179 5.9982L1.19679 1.8732C1.04499 1.71603 0.960996 1.50553 0.962894 1.28703C0.964793 1.06853 1.05243 0.859522 1.20694 0.705015C1.36145 0.550508 1.57046 0.462868 1.78896 0.460969C2.00745 0.45907 2.21795 0.543066 2.37512 0.694864L7.08929 5.40903Z" fill="currentColor"></path>
-                </svg>
-              </li>
-              <li>
-                <a class="text text-18 active">
-                  Proje Detayları
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="page-project-details mt-100">
-            <div class="container">
-                <div class="project-media radius18 aos-init aos-animate" data-aos="fade-up">
-                    @if(!string.IsNullOrEmpty(Model.ImageUrl))
-                    {
-                        <img src="@Model.ImageUrl" width="1400" height="637" loading="lazy" alt="@Model.Title" style="width: 100%; object-fit: cover;">
-                    }
-                    else
-                    {
-                        <img src="~/assets/img/project/project-details/1.jpg" width="1400" height="637" loading="lazy" alt="Image">
-                    }
-                </div>
+            <div class="container text-center">
+                <h1 class="heading text-80 fw-700" data-aos="fade-up">@Model.Project?.Title</h1>
             </div>
-            <div class="container mt-5">
+        </div>
+    </div>
+
+    <div class="page-project-details mt-100">
+        <div class="container">
+            
+            <div class="project-media radius18 mb-5" data-aos="fade-up">
+                 @if(!string.IsNullOrEmpty(Model.Project?.ImageUrl))
+                 {
+                    <img src="@Model.Project.ImageUrl" alt="@Model.Project.Title" width="1400" height="637" loading="lazy" style="width: 100%; object-fit: cover;">
+                 }
+            </div>
+
+            <div class="container">
                 <div class="project-details-content">
                     <div class="row">
                         <div class="col-lg-7 col-12">
                             <div class="content-details-inner">
-                                <h2 class="heading text-50 aos-init" data-aos="fade-up">@Model.Title</h2>
-                                
+                                <h2 class="heading text-50 aos-init" data-aos="fade-up">Proje Hakkında</h2>
                                 <div class="text text-18 aos-init mt-4" data-aos="fade-up">
-                                    @Html.Raw(Model.Description)
+                                    @Html.Raw(Model.Project?.Description)
                                 </div>
                             </div>
                             
-                            <div class="project-challenge mt-5">
-                                <h2 class="heading text-36 aos-init" data-aos="fade-up">Proje Hakkında</h2>
-                                <ul class="challenge-list list-unstyled">
-                                    <li class="challenge-item aos-init" data-aos="fade-up">
-                                        <svg class="icon-24" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M17.9999 6.99486L16.5899 5.58594L10.2499 11.9211L11.6599 13.33L17.9999 6.99486ZM22.2399 5.58594L11.6599 16.1578L7.47991 11.991L6.06991 13.3999L11.6599 18.9857L23.6599 6.99486L22.2399 5.58594ZM0.409912 13.3999L5.99991 18.9857L7.40991 17.5767L1.82991 11.991L0.409912 13.3999Z" fill="CurrentColor"></path>
-                                        </svg>
-                                        Profesyonel yaklaşım ile müşteri memnuniyeti.
-                                    </li>
+                            <div class="comments-section mt-5">
+                                <h3 class="heading text-36">Yorumlar (@approvedComments.Count)</h3>
+                                
+                                @if(TempData["Success"] != null)
+                                {
+                                    <div class="alert alert-success mt-3">@TempData["Success"]</div>
+                                }
+
+                                <ul class="list-unstyled mt-4">
+                                    @foreach(var comment in approvedComments)
+                                    {
+                                        <li class="mb-4 pb-4 border-bottom">
+                                            <div class="d-flex justify-content-between">
+                                                <h5 class="mb-1">@comment.FullName</h5>
+                                                <small class="text-muted">@comment.CreatedDate.ToString("dd MMM yyyy")</small>
+                                            </div>
+                                            <p class="mb-0">@comment.CommentText</p>
+                                        </li>
+                                    }
+                                    @if(approvedComments.Count == 0)
+                                    {
+                                        <p class="text-muted">Henüz yorum yapılmamış.</p>
+                                    }
                                 </ul>
                             </div>
+
+                            <div class="comments-form mt-5 mb-5">
+                                <h4 class="mb-4">Yorum Yap</h4>
+                                <form asp-action="PostComment" method="post" class="form contact-form">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="NewComment.ProjectId" value="@Model.Project?.Id" />
+
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <input asp-for="NewComment.FullName" class="form-control" placeholder="Adınız Soyadınız *" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <input asp-for="NewComment.Email" type="email" class="form-control" placeholder="Email Adresiniz *" required>
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <textarea asp-for="NewComment.CommentText" class="form-control" rows="4" placeholder="Yorumunuz *" required></textarea>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" class="button button--primary">Gönder</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
                         </div>
 
                         <div class="col-lg-5 col-12">
                             <div class="project-sidebar">
-                                <div class="sidebar-widget project-info radius18 aos-init" data-aos="fade-up">
+                                <div class="sidebar-widget project-info radius18" data-aos="fade-up">
                                    <h2 class="heading text-24">Proje Bilgileri</h2>
                                    <ul class="project-info-list list-unstyled">
                                         <li class="project-info-item">
                                             <div class="info-title heading text-18">Müşteri:</div>
-                                            <div class="info-data text text-16">@Model.Client</div>
+                                            <div class="info-data text text-16">@Model.Project?.Client</div>
                                         </li>
                                         <li class="project-info-item">
                                             <div class="info-title heading text-18">Tarih:</div>
-                                            <div class="info-data text text-16">@Model.ProjectDate</div>
+                                            <div class="info-data text text-16">@Model.Project?.ProjectDate</div>
                                         </li>
                                         <li class="project-info-item">
                                             <div class="info-title heading text-18">Kategori:</div>
-                                            <div class="info-data text text-16">@Model.Category</div>
+                                            <div class="info-data text text-16">@Model.Project?.Category</div>
                                         </li>
                                         <li class="project-info-item">
-                                            <div class="info-title heading text-18">Web Sitesi:</div>
+                                            <div class="info-title heading text-18">Website:</div>
                                             <div class="info-data text text-16">
-                                                <a href="@Model.WebsiteUrl" target="_blank">Siteyi Ziyaret Et</a>
+                                                <a href="@Model.Project?.WebsiteUrl" target="_blank">Siteye Git</a>
                                             </div>
                                         </li>
                                    </ul>
                                 </div>
-
-                                <div class="sidebar-widget service-contact radius18 aos-init" data-aos="fade-up">
-                                    <div class="media media-bg overlay">
-                                        <img src="~/assets/img/service/secvice-contact.jpg" width="1000" height="929" loading="lazy" alt="image">
-                                    </div>
-                                    <div class="service-contact-content">
-                                        <h2 class="heading text-36">
-                                            Projeleriniz için <br>
-                                            bize ulaşın
-                                        </h2>
-                                        <a class="icon-contact" asp-controller="Contact" asp-action="Index">
-                                            <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M23.8337 3.67188C28.2097 3.67188 32.4066 5.41026 35.5009 8.50461C38.5953 11.599 40.3337 15.7958 40.3337 20.1719M23.8337 11.0052C26.2648 11.0052 28.5964 11.971 30.3155 13.6901C32.0346 15.4091 33.0003 17.7407 33.0003 20.1719M25.359 30.3799C25.7376 30.5538 26.1642 30.5935 26.5684 30.4925C26.9727 30.3915 27.3304 30.1559 27.5828 29.8244L28.2337 28.9719C28.5752 28.5165 29.0181 28.1469 29.5272 27.8923C30.0363 27.6377 30.5978 27.5052 31.167 27.5052H36.667C37.6395 27.5052 38.5721 27.8915 39.2597 28.5791C39.9473 29.2668 40.3337 30.1994 40.3337 31.1719V36.6719C40.3337 37.6443 39.9473 38.577 39.2597 39.2646C38.5721 39.9522 37.6395 40.3385 36.667 40.3385C27.9148 40.3385 19.5212 36.8618 13.3325 30.6731C7.14377 24.4844 3.66699 16.0907 3.66699 7.33854C3.66699 6.36608 4.0533 5.43345 4.74093 4.74582C5.42857 4.05818 6.3612 3.67188 7.33366 3.67188H12.8337C13.8061 3.67188 14.7387 4.05818 15.4264 4.74582C16.114 5.43345 16.5003 6.36608 16.5003 7.33854V12.8385C16.5003 13.4078 16.3678 13.9692 16.1132 14.4783C15.8587 14.9875 15.489 15.4303 15.0337 15.7719L14.1757 16.4154C13.8391 16.6724 13.6019 17.0379 13.5043 17.45C13.4067 17.8621 13.4548 18.2952 13.6403 18.6759C16.1459 23.765 20.2668 27.8807 25.359 30.3799Z" stroke="#20282D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                                            </svg>
-                                        </a>
-                                        <div class="contact-text text text-16">
-                                            Yardım mı lazım? Bize ulaşın
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
