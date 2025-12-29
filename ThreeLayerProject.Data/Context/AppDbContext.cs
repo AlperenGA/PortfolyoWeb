@@ -20,10 +20,15 @@ namespace ThreeLayerProject.Data
         public DbSet<AboutMe> AboutMe { get; set; }
         public DbSet<ContactInfo> ContactInfos { get; set; }
         public DbSet<ContactMessage> ContactMessages { get; set; }
+        public DbSet<Brand> Brands { get; set; }
 
-        // --- EKSİK OLAN YORUM TABLOLARI (Bunları ekliyoruz) ---
+        // --- YORUM TABLOLARI ---
         public DbSet<BlogComment> BlogComments { get; set; }       // <-- EKLENDİ
         public DbSet<ProjectComment> ProjectComments { get; set; } // <-- EKLENDİ
+        
+        // --- LAYOUT TABLOLARI ---
+        public DbSet<SiteSetting> SiteSettings { get; set; }
+        public DbSet<SocialMedia> SocialMedias { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

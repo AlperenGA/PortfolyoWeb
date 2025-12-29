@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Veritabanı Bağlantısı
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+builder.Services.AddScoped<Site.UI.Services.LayoutService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

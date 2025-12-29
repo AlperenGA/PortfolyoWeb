@@ -10,6 +10,8 @@ namespace ThreeLayerProject.Entities.Models
         
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         
-        public bool IsActive { get; set; } = true; // Veriyi silmek yerine pasife çekmek için
+        public bool IsActive { get; set; } = true; 
+
+        public string? TeamSectionTitle { get; set; }
     }
 }

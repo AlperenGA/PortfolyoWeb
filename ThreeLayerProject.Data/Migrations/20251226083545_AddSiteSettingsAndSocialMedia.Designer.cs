@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ThreeLayerProject.Data;
 
@@ -10,9 +11,11 @@ using ThreeLayerProject.Data;
 namespace ThreeLayerProject.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251226083545_AddSiteSettingsAndSocialMedia")]
+    partial class AddSiteSettingsAndSocialMedia
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
@@ -46,9 +49,6 @@ namespace ThreeLayerProject.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("TeamSectionTitle")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.ToTable("AboutMe");
@@ -75,9 +75,6 @@ namespace ThreeLayerProject.Data.Migrations
 
                     b.Property<bool>("IsPublished")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("TeamSectionTitle")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -122,45 +119,11 @@ namespace ThreeLayerProject.Data.Migrations
                     b.Property<bool>("IsApproved")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("TeamSectionTitle")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BlogId");
 
                     b.ToTable("BlogComments");
-                });
-
-            modelBuilder.Entity("ThreeLayerProject.Entities.Models.Brand", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("TeamSectionTitle")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Brands");
                 });
 
             modelBuilder.Entity("ThreeLayerProject.Entities.Models.ContactInfo", b =>
@@ -210,9 +173,6 @@ namespace ThreeLayerProject.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("TeamSectionTitle")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("WorkingHours")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -257,9 +217,6 @@ namespace ThreeLayerProject.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("TeamSectionTitle")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.ToTable("ContactMessages");
@@ -298,9 +255,6 @@ namespace ThreeLayerProject.Data.Migrations
 
                     b.Property<string>("ProjectDate")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TeamSectionTitle")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
@@ -350,9 +304,6 @@ namespace ThreeLayerProject.Data.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("TeamSectionTitle")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
@@ -374,9 +325,6 @@ namespace ThreeLayerProject.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TeamSectionTitle")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -423,9 +371,6 @@ namespace ThreeLayerProject.Data.Migrations
                     b.Property<string>("SiteTitle")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("TeamSectionTitle")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.ToTable("SiteSettings");
@@ -453,9 +398,6 @@ namespace ThreeLayerProject.Data.Migrations
 
                     b.Property<int>("Order")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("TeamSectionTitle")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -495,9 +437,6 @@ namespace ThreeLayerProject.Data.Migrations
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TeamSectionTitle")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

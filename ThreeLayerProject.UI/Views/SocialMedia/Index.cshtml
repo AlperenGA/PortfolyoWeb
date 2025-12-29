@@ -1,0 +1,35 @@
+@model IEnumerable<ThreeLayerProject.Entities.Models.SocialMedia>
+@{ ViewData["Title"] = "Sosyal Medya"; Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h3>Sosyal Medya Hesapları</h3>
+        <a asp-action="Create" class="btn btn-primary">Yeni Ekle</a>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Başlık</th>
+                    <th>Link</th>
+                    <th>İkon (SVG/Code)</th>
+                    <th>Sıra</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in Model) {
+                <tr>
+                    <td>@item.Title</td>
+                    <td><a href="@item.Link" target="_blank">Linke Git</a></td>
+                    <td>@Html.Raw(item.IconCode)</td> <td>@item.Order</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Düzenle</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" onclick="return confirm('Silmek istediğine emin misin?');">Sil</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+@model ThreeLayerProject.Entities.Models.Brand
+@{ ViewData["Title"] = "Yeni Marka"; Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Yeni Marka Logosu Ekle</h4>
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            
+            <div class="mb-3">
+                <label>Marka Adı (Alt Text)</label>
+                <input asp-for="Name" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label>Logo Resmi</label>
+                <input type="file" name="imageFile" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label>Sıralama</label>
+                <input asp-for="Order" class="form-control" type="number" value="1" />
+            </div>
+
+            <button type="submit" class="btn btn-success">Kaydet</button>
+            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        </form>
+    </div>
+</div>

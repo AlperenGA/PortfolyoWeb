@@ -1,4 +1,4 @@
-@model ThreeLayerProject.Entities.Models.AboutMe
+@model Site.UI.Models.AboutPageViewModel
 
 @{
     ViewData["Title"] = "Hakkımızda";
@@ -9,7 +9,6 @@
       <div class="page-banner overlay">
         <picture class="media media-bg">
           <source media="(max-width: 575px)" srcset="~/assets/img/banner/page-banner-575.jpg">
-          <source media="(max-width: 991px)" srcset="~/assets/img/banner/page-banner-991.jpg">
           <img src="~/assets/img/banner/page-banner.jpg" width="1920" height="520" loading="eager" alt="Page Banner Image">
         </picture>
         <div class="page-banner-content">
@@ -19,19 +18,13 @@
             </h1>
             <ul class="breadcrumb list-unstyled aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
               <li>
-                  <a asp-area="" asp-controller="Home" asp-action="Index" class="text text-18" aria-label="Home Page">
-                  Anasayfa
-                </a>
+                  <a asp-controller="Home" asp-action="Index" class="text text-18" aria-label="Home Page">Anasayfa</a>
               </li>
               <li>
-                <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M7.08929 5.40903C7.24552 5.5653 7.33328 5.77723 7.33328 5.9982C7.33328 6.21917 7.24552 6.43109 7.08929 6.58736L2.37512 11.3015C2.29825 11.3811 2.2063 11.4446 2.10463 11.4883C2.00296 11.532 1.89361 11.5549 1.78296 11.5559C1.67231 11.5569 1.56258 11.5358 1.46016 11.4939C1.35775 11.452 1.2647 11.3901 1.18646 11.3119C1.10822 11.2336 1.04634 11.1406 1.00444 11.0382C0.962537 10.9357 0.941453 10.826 0.942414 10.7154C0.943376 10.6047 0.966364 10.4954 1.01004 10.3937C1.05371 10.292 1.1172 10.2001 1.19679 10.1232L5.32179 5.9982L1.19679 1.8732C1.04499 1.71603 0.960996 1.50553 0.962894 1.28703C0.964793 1.06853 1.05243 0.859522 1.20694 0.705015C1.36145 0.550508 1.57046 0.462868 1.78896 0.460969C2.00745 0.45907 2.21795 0.543066 2.37512 0.694864L7.08929 5.40903Z" fill="currentColor"></path>
-                </svg>
+                <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.08929 5.40903C7.24552 5.5653 7.33328 5.77723 7.33328 5.9982C7.33328 6.21917 7.24552 6.43109 7.08929 6.58736L2.37512 11.3015C2.29825 11.3811 2.2063 11.4446 2.10463 11.4883C2.00296 11.532 1.89361 11.5549 1.78296 11.5559C1.67231 11.5569 1.56258 11.5358 1.46016 11.4939C1.35775 11.452 1.2647 11.3901 1.18646 11.3119C1.10822 11.2336 1.04634 11.1406 1.00444 11.0382C0.962537 10.9357 0.941453 10.826 0.942414 10.7154C0.943376 10.6047 0.966364 10.4954 1.01004 10.3937C1.05371 10.292 1.1172 10.2001 1.19679 10.1232L5.32179 5.9982L1.19679 1.8732C1.04499 1.71603 0.960996 1.50553 0.962894 1.28703C0.964793 1.06853 1.05243 0.859522 1.20694 0.705015C1.36145 0.550508 1.57046 0.462868 1.78896 0.460969C2.00745 0.45907 2.21795 0.543066 2.37512 0.694864L7.08929 5.40903Z" fill="currentColor"></path></svg>
               </li>
               <li>
-                <a role="link" aria-disabled="true" class="text text-18 active">
-                  Hakkımızda
-                </a>
+                <a class="text text-18 active">Hakkımızda</a>
               </li>
             </ul>
           </div>
@@ -44,9 +37,9 @@
             
             <div class="col-lg-6 col-12">
               <div class="media-wrap aos-init aos-animate" data-aos="zoom-in-up">
-                 @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                 @if (!string.IsNullOrEmpty(Model.AboutInfo?.ImageUrl))
                  {
-                    <img src="@Model.ImageUrl" width="992" height="863" loading="lazy" alt="About Image" style="object-fit:cover;">
+                    <img src="@Model.AboutInfo.ImageUrl" width="992" height="863" loading="lazy" alt="About Image" style="object-fit:cover;">
                  }
                  else
                  {
@@ -58,48 +51,26 @@
             <div class="col-lg-6 col-12">
               <div class="content section-headings">
                 <div class="subheading text-20 subheading-bg aos-init aos-animate" data-aos="fade-up">
-                  <svg class="icon icon-14" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <g clip-path="url(#clip0_9088_4143)">
-                      <path d="M8.71401 5.28599C11.7514 5.4205 14 5.9412 14 7C14 8.0588 11.7514 8.5795 8.71401 8.71401C8.5795 11.7514 8.0588 14 7 14C5.9412 14 5.4205 11.7514 5.28599 8.71401C2.2486 8.5795 -1.33117e-07 8.0588 0 7C4.62818e-08 5.94119 2.2486 5.4205 5.28599 5.28599C5.4205 2.2486 5.9412 0 7 0C8.0588 0 8.5795 2.2486 8.71401 5.28599Z" fill="CurrentColor"></path>
-                    </g>
-                    <defs>
-                      <clipPath>
-                        <rect width="14" height="14" fill="CurrentColor"></rect>
-                      </clipPath>
-                    </defs>
-                  </svg>
                   <span>Şirketimiz</span>
-                  <svg class="icon icon-14" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <g clip-path="url(#clip0_9088_4143)">
-                      <path d="M8.71401 5.28599C11.7514 5.4205 14 5.9412 14 7C14 8.0588 11.7514 8.5795 8.71401 8.71401C8.5795 11.7514 8.0588 14 7 14C5.9412 14 5.4205 11.7514 5.28599 8.71401C2.2486 8.5795 -1.33117e-07 8.0588 0 7C4.62818e-08 5.94119 2.2486 5.4205 5.28599 5.28599C5.4205 2.2486 5.9412 0 7 0C8.0588 0 8.5795 2.2486 8.71401 5.28599Z" fill="CurrentColor"></path>
-                    </g>
-                    <defs>
-                      <clipPath>
-                        <rect width="14" height="14" fill="CurrentColor"></rect>
-                      </clipPath>
-                    </defs>
-                  </svg>
                 </div>
                 
                 <h2 class="heading text-50 aos-init aos-animate" data-aos="fade-up">
-                  @(string.IsNullOrEmpty(Model.FullName) ? "Lütfen Admin Panelinden İçerik Ekleyin" : Model.FullName)
+                  @(string.IsNullOrEmpty(Model.AboutInfo?.FullName) ? "Lütfen Admin Panelinden İçerik Ekleyin" : Model.AboutInfo.FullName)
                 </h2>
                 
                 <div class="text text-18 aos-init aos-animate" data-aos="fade-up">
-                  @Model.ShortDescription
+                  @Model.AboutInfo?.ShortDescription
                 </div>
                 
                 <div class="text-lists list-unstyled text text-18 mt-4 aos-init aos-animate" data-aos="fade-up">
-                    @Html.Raw(Model.LongDescription)
+                    @Html.Raw(Model.AboutInfo?.LongDescription)
                 </div>
 
                 <div class="buttons aos-init aos-animate mt-4" data-aos="fade-up">
                   <a asp-controller="Contact" asp-action="Index" class="button button--primary" aria-label="More About Us">
                     İletişime Geç
                     <span class="svg-wrapper">
-                      <svg class="icon-20" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M13.3365 7.84518L6.16435 15.0173L4.98584 13.8388L12.158 6.66667H5.83652V5H15.0032V14.1667H13.3365V7.84518Z" fill="CurrentColor"></path>
-                      </svg>
+                      <svg class="icon-20" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.3365 7.84518L6.16435 15.0173L4.98584 13.8388L12.158 6.66667H5.83652V5H15.0032V14.1667H13.3365V7.84518Z" fill="CurrentColor"></path></svg>
                     </span>
                   </a>
                 </div>
@@ -113,126 +84,59 @@
         <div class="container">
           <div class="content-inner">
             <div class="content-lists running-animation">
+              
               <div class="content-item">
-                <a class="content-link">
-                  <img src="~/assets/img/brand/b1.png" width="108" height="36" loading="lazy" alt="Brand Image">
-                </a>
-                <a class="content-link">
-                  <img src="~/assets/img/brand/b2.png" width="108" height="36" loading="lazy" alt="Brand Image">
-                </a>
-                <a class="content-link">
-                  <img src="~/assets/img/brand/b3.png" width="108" height="36" loading="lazy" alt="Brand Image">
-                </a>
-                <a class="content-link">
-                  <img src="~/assets/img/brand/b4.png" width="108" height="36" loading="lazy" alt="Brand Image">
-                </a>
-                <a class="content-link">
-                  <img src="~/assets/img/brand/b5.png" width="108" height="36" loading="lazy" alt="Brand Image">
-                </a>
+                @if(Model.Brands != null && Model.Brands.Any())
+                {
+                    foreach(var brand in Model.Brands)
+                    {
+                        <a class="content-link">
+                          <img src="@brand.ImageUrl" width="108" height="36" loading="lazy" alt="@brand.Name">
+                        </a>
+                    }
+                }
+                else
+                {
+                    <a class="content-link"><img src="~/assets/img/brand/b1.png" alt="Brand"></a>
+                    <a class="content-link"><img src="~/assets/img/brand/b2.png" alt="Brand"></a>
+                }
               </div>
+
               <div class="content-item">
-                <a class="content-link"><img src="~/assets/img/brand/b1.png" width="108" height="36" loading="lazy" alt="Brand Image"></a>
-                <a class="content-link"><img src="~/assets/img/brand/b2.png" width="108" height="36" loading="lazy" alt="Brand Image"></a>
-                <a class="content-link"><img src="~/assets/img/brand/b3.png" width="108" height="36" loading="lazy" alt="Brand Image"></a>
-                <a class="content-link"><img src="~/assets/img/brand/b4.png" width="108" height="36" loading="lazy" alt="Brand Image"></a>
-                <a class="content-link"><img src="~/assets/img/brand/b5.png" width="108" height="36" loading="lazy" alt="Brand Image"></a>
+                @if(Model.Brands != null && Model.Brands.Any())
+                {
+                    foreach(var brand in Model.Brands)
+                    {
+                        <a class="content-link">
+                          <img src="@brand.ImageUrl" width="108" height="36" loading="lazy" alt="@brand.Name">
+                        </a>
+                    }
+                }
+                 else
+                {
+                    <a class="content-link"><img src="~/assets/img/brand/b1.png" alt="Brand"></a>
+                    <a class="content-link"><img src="~/assets/img/brand/b2.png" alt="Brand"></a>
+                }
               </div>
+
             </div>
           </div>
-        </div>
-      </div>
-
-      <div class="why-choose-us bg-transparent mt-100 section-padding">
-        <div class="media media-bg">
-          <img src="~/assets/img/why-choose-us/bg.jpg" alt="choose us background image" width="1920" height="887" loading="lazy">
-        </div>
-        <div class="container">
-          <div class="choose-top">
-            <div class="row">
-              <div class="col-12 col-lg-6">
-                <picture class="choose-media radius18 aos-init aos-animate" data-aos="fade-right">
-                  <source media="(max-width: 575px)" srcset="~/assets/img/why-choose-us/575.jpg">
-                  <img src="~/assets/img/why-choose-us/1.jpg" alt="choose us image" width="1000" height="742" loading="lazy">
-                </picture>
-              </div>
-              <div class="col-12 col-lg-6">
-                <div class="choose-us-content section-headings">
-                  <div class="subheading text-20 subheading-bg aos-init aos-animate" data-aos="fade-up">
-                    <svg class="icon icon-14" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none"><g clip-path="url(#clip0_9088_4143)"><path d="M8.71401 5.28599C11.7514 5.4205 14 5.9412 14 7C14 8.0588 11.7514 8.5795 8.71401 8.71401C8.5795 11.7514 8.0588 14 7 14C5.9412 14 5.4205 11.7514 5.28599 8.71401C2.2486 8.5795 -1.33117e-07 8.0588 0 7C4.62818e-08 5.94119 2.2486 5.4205 5.28599 5.28599C5.4205 2.2486 5.9412 0 7 0C8.0588 0 8.5795 2.2486 8.71401 5.28599Z" fill="CurrentColor"></path></g><defs><clipPath><rect width="14" height="14" fill="CurrentColor"></rect></clipPath></defs></svg>
-                    <span>Why Choose Us</span>
-                    <svg class="icon icon-14" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none"><g clip-path="url(#clip0_9088_4143)"><path d="M8.71401 5.28599C11.7514 5.4205 14 5.9412 14 7C14 8.0588 11.7514 8.5795 8.71401 8.71401C8.5795 11.7514 8.0588 14 7 14C5.9412 14 5.4205 11.7514 5.28599 8.71401C2.2486 8.5795 -1.33117e-07 8.0588 0 7C4.62818e-08 5.94119 2.2486 5.4205 5.28599 5.28599C5.4205 2.2486 5.9412 0 7 0C8.0588 0 8.5795 2.2486 8.71401 5.28599Z" fill="CurrentColor"></path></g><defs><clipPath><rect width="14" height="14" fill="CurrentColor"></rect></clipPath></defs></svg>
-                  </div>
-                  <h2 class="heading text-50 aos-init aos-animate" data-aos="fade-up">
-                    Supporting Growth on a Global Scale
-                  </h2>
-                  <p class="text text-18 aos-init aos-animate" data-aos="fade-up">
-                    We provide dependable and tailored consulting services that
-                    help your business navigate challenges, seize opportunities.
-                  </p>
-                  
-                  <div class="choose-logo">
-                    <div class="choose-rotating-logo svg-wrapper aos-init aos-animate" data-aos="zoom-in-up">
-                        <svg class="infinite-rotate" viewBox="0 0 179 179" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="89" cy="89" r="60" fill="#20282D"></circle>
-                             <path d="M91.0124 2.86574..." fill="#1C2539"></path>
-                             </svg>
-                        <span class="text-abs">25</span>
-                     </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="choose-bottom">
-             <div class="choose-bottom-cards">
-                 <div class="row">
-                    <div class="col-12 col-lg-6 col-xl-4 aos-init aos-animate" data-aos="fade-up">
-                        <div class="card-icon-text card-icon-text-horizontal">
-                            <div class="content">
-                                <h2 class="heading text-20 fw-700">Our Mission</h2>
-                                <p class="text text-16">Our mission is push engage boundaries, enga audiences, and driv engage.</p>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="col-12 col-lg-6 col-xl-4 aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
-                        <div class="card-icon-text card-icon-text-horizontal">
-                            <div class="content">
-                                <h2 class="heading text-20 fw-700">Our Vision</h2>
-                                <p class="text text-16">Our mission is push engage boundaries, enga audiences, and driv engage.</p>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="col-12 col-lg-6 col-xl-4 aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
-                        <div class="card-icon-text card-icon-text-horizontal">
-                            <div class="content">
-                                <h2 class="heading text-20 fw-700">Our Awards</h2>
-                                <p class="text text-16">Our mission is push engage boundaries, enga audiences, and driv engage.</p>
-                            </div>
-                        </div>
-                    </div>
-                 </div>
-              </div>
-              <div class="choose-media-absolute radius18 aos-init aos-animate" data-aos="fade-up" data-aos-delay="400">
-                  <img src="~/assets/img/why-choose-us/2.jpg" alt="choose image" width="800" height="834" loading="lazy">
-              </div>
-          </div>
-
         </div>
       </div>
 
       <team-slider class="team-slider mt-100">
         <div class="container">
             <div class="section-headings headings-width text-center">
-                <h2 class="heading text-50 aos-init aos-animate" data-aos="fade-up">Meet the experts behind your success</h2>
+                <h2 class="heading text-50 aos-init aos-animate" data-aos="fade-up">
+                    @(string.IsNullOrEmpty(Model.AboutInfo?.TeamSectionTitle) ? "Meet the experts behind your success" : Model.AboutInfo.TeamSectionTitle)
+                </h2>
             </div>
         </div>
-        </team-slider>
+      </team-slider>
       
       <div class="faq mt-100">
           <div class="container">
-              </div>
+          </div>
       </div>
 
 </main>

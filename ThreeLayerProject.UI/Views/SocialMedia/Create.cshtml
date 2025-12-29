@@ -1,0 +1,29 @@
+@model ThreeLayerProject.Entities.Models.SocialMedia
+@{ ViewData["Title"] = "Yeni Sosyal Medya"; Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Yeni Sosyal Medya Ekle</h4>
+        <form asp-action="Create" method="post">
+            <div class="mb-3">
+                <label>Başlık (Örn: Facebook)</label>
+                <input asp-for="Title" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label>Link (URL)</label>
+                <input asp-for="Link" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label>İkon Kodu (SVG veya HTML Class)</label>
+                <textarea asp-for="IconCode" class="form-control" rows="3"></textarea>
+                <small class="text-muted">Template'in orijinal SVG kodunu buraya yapıştırabilirsin.</small>
+            </div>
+            <div class="mb-3">
+                <label>Sıralama</label>
+                <input asp-for="Order" class="form-control" type="number" value="1" />
+            </div>
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        </form>
+    </div>
+</div>

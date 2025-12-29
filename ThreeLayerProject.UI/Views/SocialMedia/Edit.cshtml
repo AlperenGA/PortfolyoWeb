@@ -1,0 +1,32 @@
+@model ThreeLayerProject.Entities.Models.SocialMedia
+@{ ViewData["Title"] = "Düzenle"; Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Düzenle: @Model.Title</h4>
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CreatedDate" />
+            <input type="hidden" asp-for="IsActive" />
+
+            <div class="mb-3">
+                <label>Başlık</label>
+                <input asp-for="Title" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label>Link</label>
+                <input asp-for="Link" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label>İkon Kodu</label>
+                <textarea asp-for="IconCode" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+                <label>Sıralama</label>
+                <input asp-for="Order" class="form-control" type="number" />
+            </div>
+            <button type="submit" class="btn btn-success">Güncelle</button>
+            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        </form>
+    </div>
+</div>

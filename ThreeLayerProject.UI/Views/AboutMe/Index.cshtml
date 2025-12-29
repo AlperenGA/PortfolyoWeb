@@ -1,92 +1,126 @@
-@model ThreeLayerProject.Entities.Models.AboutMe
+@model ThreeLayerProject.UI.Models.AboutPageAdminViewModel
 
 @{
-    ViewData["Title"] = "Hakkımda Düzenle";
+    ViewData["Title"] = "Hakkımızda Yönetimi";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="pagetitle">
-    <h1>Hakkımda Yönetimi</h1>
-    <nav>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a asp-controller="Dashboard" asp-action="Index">Dashboard</a></li>
-            <li class="breadcrumb-item active">Hakkımda</li>
-        </ol>
-    </nav>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div class="card mb-5">
+    <div class="card-header bg-primary text-white">
+        <h3 class="card-title mb-0">Hakkımızda İçeriği</h3>
+    </div>
+    <div class="card-body">
+        <form asp-action="UpdateAbout" method="post" enctype="multipart/form-data">
+            
+            <div class="mb-3">
+                <label class="form-label">Ana Başlık (Firma Adı)</label>
+                <input type="text" name="FullName" value="@Model.AboutMe.FullName" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Büyük Resim</label>
+                <input type="file" name="file" class="form-control" />
+                @if (!string.IsNullOrEmpty(Model.AboutMe.ImageUrl))
+                {
+                    <div class="mt-2">
+                        <img src="@Model.AboutMe.ImageUrl" width="150" class="img-thumbnail" />
+                    </div>
+                }
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Kısa Açıklama (Gri Alan)</label>
+                <textarea name="ShortDescription" class="form-control" rows="3">@Model.AboutMe.ShortDescription</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Uzun Açıklama (HTML İçerik)</label>
+                <textarea name="LongDescription" class="form-control" rows="6">@Model.AboutMe.LongDescription</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Takım Bölümü Başlığı</label>
+                <input type="text" name="TeamSectionTitle" value="@Model.AboutMe.TeamSectionTitle" class="form-control" placeholder="Örn: Uzman Ekibimizle Tanışın" />
+            </div>
+
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i> Değişiklikleri Kaydet
+            </button>
+        </form>
+    </div>
 </div>
 
-<section class="section">
-    <div class="row">
-        <div class="col-lg-10">
-
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Kurumsal Bilgileri Güncelle</h5>
-
-                    @if (TempData["Success"] != null)
-                    {
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <i class="bi bi-check-circle me-1"></i>
-                            @TempData["Success"]
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    }
-
-                    <form asp-action="Index" method="post" enctype="multipart/form-data">
-                        <input type="hidden" asp-for="Id" />
-                        
-                        <div class="row mb-3">
-                            <label for="FullName" class="col-md-4 col-lg-3 col-form-label">Ana Başlık (Heading)</label>
-                            <div class="col-md-8 col-lg-9">
-                                <input asp-for="FullName" class="form-control" id="FullName" placeholder="Örn: Redesigning business for solutions">
-                                <span class="text-muted small">Site ön yüzündeki büyük başlık alanı.</span>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="ShortDescription" class="col-md-4 col-lg-3 col-form-label">Kısa Açıklama (Ünvan/Slogan)</label>
-                            <div class="col-md-8 col-lg-9">
-                                <input asp-for="ShortDescription" class="form-control" id="ShortDescription" placeholder="Örn: Our mission is to empowers businesses...">
-                                <span class="text-muted small">Başlığın hemen altındaki kısa metin.</span>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="LongDescription" class="col-md-4 col-lg-3 col-form-label">Detaylı İçerik</label>
-                            <div class="col-md-8 col-lg-9">
-                                <textarea asp-for="LongDescription" class="form-control tinymce-editor" style="height: 300px"></textarea>
-                                <span class="text-muted small">Maddeli listeler ve detaylı tanıtım metni buraya.</span>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="ImageUpload" class="col-md-4 col-lg-3 col-form-label">Kurumsal Görsel</label>
-                            <div class="col-md-8 col-lg-9">
-                                @if (!string.IsNullOrEmpty(Model?.ImageUrl))
-                                {
-                                    <div class="mb-2">
-                                        <img src="@Model.ImageUrl" alt="Mevcut Görsel" style="max-width: 200px; border-radius: 8px;" class="border">
-                                    </div>
-                                }
-                                <input class="form-control" type="file" id="ImageUpload" name="file" accept="image/*">
-                            </div>
-                        </div>
-
-                        <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save"></i> Değişiklikleri Kaydet
-                            </button>
-                        </div>
-
-                    </form>
-
-                </div>
-            </div>
-
-        </div>
-        
-        <div class="col-lg-2">
-            </div>
-
+<div class="card">
+    <div class="card-header bg-warning text-dark">
+        <h3 class="card-title mb-0">Marka Logoları (Kayan Şerit)</h3>
     </div>
-</section>
+    <div class="card-body">
+        
+        <form asp-action="AddBrand" method="post" enctype="multipart/form-data" class="row g-3 align-items-end mb-4 border-bottom pb-4">
+            <div class="col-md-4">
+                <label class="form-label">Marka Adı</label>
+                <input type="text" name="name" class="form-control" placeholder="Örn: Microsoft" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Logo Seç</label>
+                <input type="file" name="imageFile" class="form-control" required>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Sıra</label>
+                <input type="number" name="order" class="form-control" value="1">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Ekle</button>
+            </div>
+        </form>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th style="width: 150px;">Logo</th>
+                    <th>Marka Adı</th>
+                    <th>Sıra</th>
+                    <th style="width: 100px;">İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Brands != null && Model.Brands.Any())
+                {
+                    foreach (var brand in Model.Brands)
+                    {
+                        <tr>
+                            <td class="text-center bg-light">
+                                <img src="@brand.ImageUrl" style="max-height: 40px;" />
+                            </td>
+                            <td>@brand.Name</td>
+                            <td>@brand.Order</td>
+                            <td>
+                                <form asp-action="DeleteBrand" method="post" onsubmit="return confirm('Bu logoyu silmek istediğine emin misin?');">
+                                    <input type="hidden" name="id" value="@brand.Id" />
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i> Sil
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">Henüz hiç marka eklenmemiş.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
